@@ -1,180 +1,67 @@
 import React, { useState } from "react";
-import { Text, View, Button, StyleSheet, Image, Platform } from "react-native";
-import { PeopleScreen } from "./app/screens/PeopleScreen";
-import { DecisionScreen } from "./app/screens/DecisionScreen";
-import { RestaurantsScreen } from "./app/screens/RestaurantsScreen";
+import {
+  Text,
+  View,
+  Button,
+  StyleSheet,
+  Platform,
+  SafeAreaView,
+  StatusBar,
+} from "react-native";
+
+import PeopleScreen from "./app/screens/PeopleScreen";
+import DecisionScreen from "./app/screens/DecisionScreen";
+import RestaurantsScreen from "./app/screens/RestaurantsScreen";
+
+import { Constants } from "expo";
 
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
-function HomeScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      {/* <Text>Home Screen</Text> */}
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate("Details")}
-      />
-    </View>
-  );
-}
+console.log("------------------------------------------------------------");
+console.log(`RestaurantChooser starting on ${Platform.OS}`);
 
-function DetailsScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Details Screen</Text>
-      <Button
-        title="Go to Details... again"
-        onPress={() => navigation.push("Details")}
-      />
-      <Button title="Go to Home" onPress={() => navigation.navigate("Home")} />
-      <Button title="Go back" onPress={() => navigation.goBack()} />
-      <Button
-        title="Go back to first screen in stack"
-        onPress={() => navigation.popToTop()}
-      />
-    </View>
-  );
-}
-
-const Stack = createStackNavigator();
-
-function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Restaurant chooser" component={HomeScreen} />
-        <Stack.Screen name="Details" component={DetailsScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
-
-// function App() {
-//   return (
-//     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-//       <Text>Something</Text>
-//     </View>
-//   );
-// }
-
-export default App;
-
-// import { NavigationContainer } from "@react-navigation/native";
-// import { createStackNavigator } from "@react-navigation/stack";
+const platformOS = Platform.OS.toLowerCase();
 
 // function HomeScreen() {
 //   return (
-//     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-//       <Text>Home Screen</Text>
+//     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+//       <Text>Home!</Text>
 //     </View>
 //   );
 // }
 
-// const Stack = createStackNavigator();
-
-// function App() {
+// function SettingsScreen() {
 //   return (
-//     <NavigationContainer>
-//       <Stack.Navigator>
-//         <Stack.Screen name="Home" component={HomeScreen} />
-//       </Stack.Navigator>
-//     </NavigationContainer>
+//     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+//       <Text>Settings!</Text>
+//     </View>
 //   );
 // }
 
-// const HelloWorldApp = () => {
-//   //date and time picker
-//   const [date, setDate] = useState(new Date(1598051730000));
-//   const [mode, setMode] = useState("date");
-//   const [show, setShow] = useState(false);
+const Tab = createMaterialTopTabNavigator();
 
-//   const onChange = (event, selectedDate) => {
-//     const currentDate = selectedDate || date;
-//     setShow(Platform.OS === "ios");
-//     setDate(currentDate);
-//   };
+export default function App() {
+  return (
+    <SafeAreaView style={styles.container}>
+      <NavigationContainer>
+        <Tab.Navigator>
+          {/* <Tab.Screen name="Home" component={HomeScreen} /> */}
+          {/* <Tab.Screen name="Settings" component={SettingsScreen} /> */}
+          <Tab.Screen name="People" component={PeopleScreen} />
+          <Tab.Screen name="Decision" component={DecisionScreen} />
+          <Tab.Screen name="Restaurants" component={RestaurantsScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </SafeAreaView>
+  );
+}
 
-//   const showMode = (currentMode) => {
-//     setShow(true);
-//     setMode(currentMode);
-//   };
-
-//   const showDatepicker = () => {
-//     showMode("date");
-//   };
-
-//   const showTimepicker = () => {
-//     showMode("time");
-//   };
-
-//   //date picker
-//   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
-//   const showDatePicker = () => {
-//     setDatePickerVisibility(true);
-//   };
-
-//   const hideDatePicker = () => {
-//     setDatePickerVisibility(false);
-//   };
-
-//   const handleConfirm = (date) => {
-//     console.warn("A date has been picked: ", date);
-//     hideDatePicker();
-//   };
-
-//   //counter
-//   const [count, setCount] = useState(0);
-//   return (
-//     <View
-//       style={{
-//         flex: 1,
-//         justifyContent: "center",
-//         alignItems: "center",
-//       }}
-//     >
-//       <Text>Hellfdso, world!</Text>
-//       <View>
-//         <Button title="Choose date" onPress={showDatePicker} />
-//         <DateTimePickerModal
-//           isVisible={isDatePickerVisible}
-//           mode="date"
-//           onConfirm={handleConfirm}
-//           onCancel={hideDatePicker}
-//         />
-//       </View>
-//       <View style={styles.container}>
-//         <Text>You clicked {count} times</Text>
-//         <Button onPress={() => setCount(count + 1)} title="Click me!" />
-//       </View>
-//       <View>
-//         <View>
-//           <Button onPress={showDatepicker} title="Show date picker!" />
-//         </View>
-//         <View>
-//           <Button onPress={showTimepicker} title="Show time picker!" />
-//         </View>
-//         {show && (
-//           <DateTimePicker
-//             testID="dateTimePicker"
-//             value={date}
-//             mode={mode}
-//             is24Hour={true}
-//             display="default"
-//             onChange={onChange}
-//           />
-//         )}
-//       </View>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     // flex: 1,
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-// });
-// export default HelloWorldApp;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    // alignItems: "center",
+    // justifyContent: "center",
+  },
+});
